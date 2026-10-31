@@ -2,9 +2,6 @@
 
 This is the documentation site for [discordbot.js](https://github.com/shir0sys/discordbot.js), a zero-dependency Discord API v10 wrapper for Node.js.
 
-- **Live site**: https://shir0sys.github.io/DiscordBotjs-docs/
-- **Library source**: https://github.com/shir0sys/discordbot.js
-
 ## What's here
 
 - `guides/` — hand-written guides (getting started, slash commands, components, interactions, sharding, OAuth2).
