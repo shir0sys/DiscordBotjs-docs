@@ -65,8 +65,8 @@ await sticker.edit({ name: "wave_v2" });
 await sticker.delete();
 ```
 
-To actually send a sticker in a message, `channel.send()` doesn't wire up a `stickers` option yet — use the REST client directly with `sticker_ids`:
+To send a sticker in a message, pass `stickerIds`:
 
 ```js
-await client.rest.post(`/channels/${channel.id}/messages`, { sticker_ids: [sticker.id] });
+await channel.send({ stickerIds: [sticker.id] });
 ```

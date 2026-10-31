@@ -36,6 +36,15 @@ await ban.revoke(); // shorthand for guild.bans.remove(ban.user.id)
 const allBans = await guild.bans.list();
 ```
 
+Banning many users at once (up to 200 per call):
+
+```js
+const { bannedUsers, failedUsers } = await guild.bans.bulkCreate(userIds, {
+  reason: "Raid cleanup",
+  deleteMessageSeconds: 3600,
+});
+```
+
 ## Timing out a member
 
 A timeout (Discord's built-in "communication disabled" state) prevents a member from sending messages, reacting, or speaking in voice until it expires.
@@ -76,6 +85,12 @@ await member.removeRole(role.id);
 // Edit or delete a role
 await guild.roles.edit(role.id, { name: "Senior Moderator" });
 await guild.roles.remove(role.id);
+
+// Reorder roles (lower position = lower in the role list)
+await guild.roles.setPositions([
+  { id: role.id, position: 5 },
+  { id: otherRoleId, position: 4 },
+]);
 ```
 
 `guild.roles` is a `Collection`, so once populated (it's filled automatically from the gateway's `GUILD_CREATE`/role events) you can iterate it directly:

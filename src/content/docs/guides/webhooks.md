@@ -7,17 +7,22 @@ A webhook lets you post messages into a channel using just an id + token — no 
 
 ## Creating a webhook
 
-There's no dedicated manager for this yet, so create one with a raw REST call through your bot client:
-
 ```js
-const webhookData = await client.rest.post(`/channels/${channelId}/webhooks`, {
-  name: "Deploy Bot",
-});
+const channel = await client.channels.fetch(channelId);
+const webhook = await channel.createWebhook({ name: "Deploy Bot" });
 
-console.log(webhookData.id, webhookData.token);
+console.log(webhook.id, webhook.token);
 ```
 
 Keep the `id` and `token` somewhere safe (a `.env` file, a secret store) — anyone with both can post to that channel as the webhook.
+
+List existing webhooks on a channel:
+
+```js
+const webhooks = await channel.fetchWebhooks();
+// or, for every webhook across a guild:
+const guildWebhooks = await guild.fetchWebhooks();
+```
 
 ## Sending through a webhook
 
@@ -42,16 +47,10 @@ await webhook.send({
 
 If your bot already knows a webhook's id (e.g. it created it, or you stored it from the REST call above), wrap it in a `Webhook` instance to edit, delete, or send through it using your bot's regular rate-limited REST client instead of a bare `fetch`:
 
+The `webhook` returned by `channel.createWebhook()`/`fetchWebhooks()`/`guild.fetchWebhooks()` is already a `Webhook` instance:
+
 ```js
-const { Webhook } = require("discordbot.js");
-
-const webhook = new Webhook(client, webhookData); // webhookData from the create call above
-
 await webhook.send("Hello via the bot's REST client");
 await webhook.edit({ name: "Renamed Webhook" }, "Rebranding");
 await webhook.delete("No longer needed");
 ```
-
-:::note
-Listing all webhooks on a channel or guild isn't implemented yet — if you need to find an existing webhook rather than create a new one, call `client.rest.get('/channels/{channelId}/webhooks')` directly.
-:::

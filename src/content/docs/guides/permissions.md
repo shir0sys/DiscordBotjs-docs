@@ -45,34 +45,31 @@ const role = guild.roles.get(roleId);
 const rolePerms = new PermissionsBitField(role.permissions);
 ```
 
-## Computing effective permissions in a channel
+## A member's base permissions
 
-A member's permissions in a specific channel aren't just their roles' permissions — channel-specific overwrites (for `@everyone`, specific roles, or the member directly) can grant or deny on top of that. `channel.permissionsFor()` does this computation for you, applying overwrites in Discord's real priority order (`@everyone` → roles → member-specific):
+`member.permissions` rolls up `@everyone` plus every role the member has, into a `PermissionsBitField`. It needs the guild to already be cached (fetch it first if it isn't):
 
 ```js
-function basePermissionsFor(guild, member) {
-  const everyoneRole = guild.roles.get(guild.id); // the @everyone role shares the guild's id
-  let bits = everyoneRole.permissions;
-  for (const roleId of member.roleIds) {
-    bits |= guild.roles.get(roleId)?.permissions ?? 0n;
-  }
-  return new PermissionsBitField(bits);
-}
-
 const member = await guild.members.fetch(userId);
-const base = basePermissionsFor(guild, member);
+member.permissions.has(PermissionFlags.BanMembers);
+```
+
+## Computing effective permissions in a channel
+
+A member's permissions in a specific channel aren't just their roles' permissions — channel-specific overwrites (for `@everyone`, specific roles, or the member directly) can grant or deny on top of that. `member.permissionsIn(channel)` applies those overwrites on top of `member.permissions`, in Discord's real priority order (`@everyone` → roles → member-specific):
+
+```js
+const member = await guild.members.fetch(userId);
 const channel = await client.channels.fetch(channelId);
 
-const effective = channel.permissionsFor(base, member.user.id, member.roleIds);
+const effective = member.permissionsIn(channel);
 
 if (!effective.has(PermissionFlags.SendMessages)) {
   await interaction.reply("You can't send messages in that channel.");
 }
 ```
 
-:::note
-There's no `member.permissionsIn(channel)` one-liner yet — computing the base permissions (rolling up `@everyone` + the member's roles) is on the caller for now, as shown above.
-:::
+If you already have a `PermissionsBitField` from elsewhere, `channel.permissionsFor(base, memberId, roleIds)` does the same overwrite computation without needing a full `Member` instance.
 
 ## Guarding a command with a permission check
 
@@ -85,9 +82,8 @@ client.on("interactionCreate", async (interaction) => {
 
   const guild = await client.guilds.fetch(interaction.guildId);
   const invoker = await guild.members.fetch(interaction.user.id);
-  const base = basePermissionsFor(guild, invoker);
 
-  if (!base.has(PermissionFlags.BanMembers)) {
+  if (!invoker.permissions.has(PermissionFlags.BanMembers)) {
     await interaction.reply({ content: "You don't have permission to do that.", flags: 64 /* ephemeral */ });
     return;
   }
