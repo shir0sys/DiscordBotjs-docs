@@ -5,6 +5,8 @@
   "name": "discordbot.js",
   "readme": "README.md",
   "includeVersion": true,
+  "customCss": "./custom.css",
+  "favicon": "./media/logo.svg",
   "navigationLinks": {
     "GitHub": "https://github.com/shir0sys/discordbot.js",
     "Guides": "https://shir0sys.github.io/DiscordBotjs-docs/guides"

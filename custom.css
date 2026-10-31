@@ -1,0 +1,146 @@
+/* Discord-branded reskin of the TypeDoc default theme. Overrides the base
+   color tokens TypeDoc's own stylesheet derives --color-* from, so both the
+   light theme, dark theme and the manual light/dark toggle stay consistent
+   without fighting TypeDoc's own cascade. */
+
+:root {
+  /* Light */
+  --light-color-background: #ffffff;
+  --light-color-background-secondary: #f2f3f5;
+  --light-color-accent: #5865f2;
+  --light-color-active-menu-item: #e3e5e8;
+  --light-color-text: #060607;
+  --light-color-text-aside: #5c5e66;
+  --light-color-link: #006ce7;
+  --light-color-focus-outline: #5865f2;
+
+  --light-color-ts-keyword: #006ce7;
+  --light-color-ts-class: #5865f2;
+  --light-color-ts-interface: #248046;
+  --light-color-ts-enum: #a86a00;
+  --light-color-ts-enum-member: var(--light-color-ts-enum);
+  --light-color-ts-variable: #4752c4;
+  --light-color-ts-function: #4752c4;
+  --light-color-ts-method: #c4277d;
+  --light-color-ts-property: #a86a00;
+  --light-color-ts-type-alias: #c4277d;
+
+  /* Dark */
+  --dark-color-background: #313338;
+  --dark-color-background-secondary: #2b2d31;
+  --dark-color-accent: #5865f2;
+  --dark-color-active-menu-item: #404249;
+  --dark-color-text: #f2f3f5;
+  --dark-color-text-aside: #b5bac1;
+  --dark-color-link: #00a8fc;
+  --dark-color-focus-outline: #5865f2;
+
+  --dark-color-ts-keyword: #00a8fc;
+  --dark-color-ts-class: #949cf7;
+  --dark-color-ts-interface: #23a55a;
+  --dark-color-ts-enum: #f0b232;
+  --dark-color-ts-enum-member: var(--dark-color-ts-enum);
+  --dark-color-ts-variable: #949cf7;
+  --dark-color-ts-function: #949cf7;
+  --dark-color-ts-method: #eb459e;
+  --dark-color-ts-property: #f0b232;
+  --dark-color-ts-type-alias: #eb459e;
+
+  --blurple: #5865f2;
+  --blurple-hover: #4752c4;
+}
+
+body {
+  font-family: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+code,
+pre,
+.tsd-signature {
+  font-family: "Consolas", "SF Mono", "Cascadia Code", Menlo, monospace;
+}
+
+/* Header */
+.tsd-page-toolbar {
+  background: var(--dark-color-background-secondary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="light"] .tsd-page-toolbar {
+  background: var(--light-color-background-secondary);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .tsd-page-toolbar {
+    background: var(--light-color-background-secondary);
+  }
+}
+
+.tsd-toolbar-contents .title {
+  font-weight: 700;
+}
+
+.tsd-toolbar-contents .title::before {
+  content: "";
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-right: 8px;
+  vertical-align: text-bottom;
+  background-image: url("../media/logo.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* Rounded, Discord-ish surfaces */
+.tsd-panel,
+.tsd-member,
+.tsd-signature,
+pre,
+.tsd-navigation.settings,
+#tsd-search .field input,
+#tsd-search .results {
+  border-radius: 8px;
+}
+
+a {
+  color: var(--color-link);
+}
+
+/* Accent-colored interactive bits, matching Discord's blurple buttons */
+.tsd-navigation a.current,
+.tsd-navigation a:hover,
+.tsd-page-navigation a:hover {
+  background: color-mix(in srgb, var(--blurple) 16%, transparent);
+}
+
+.tsd-kind-icon,
+.tsd-navigation a.current {
+  color: var(--color-text);
+}
+
+#tsd-search .field input:focus,
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--blurple);
+  outline-offset: 1px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--blurple) 35%, transparent);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--blurple) 45%, transparent);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

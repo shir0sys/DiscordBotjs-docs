@@ -5,10 +5,11 @@
   "description": "Documentation site for discordbot.js (API reference + guides)",
   "scripts": {
     "fetch-source": "node scripts/fetch-source.js",
-    "build": "npm run fetch-source && typedoc",
+    "copy-media": "node scripts/copy-media.js",
+    "build": "npm run fetch-source && typedoc && npm run copy-media",
     "serve": "npx http-server docs -p 8080 -c-1"
   },
   "devDependencies": {
-    "typedoc": "^0.26.0"
+    "typedoc": "^0.28.0"
   }
 }
