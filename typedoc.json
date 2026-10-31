@@ -1,0 +1,25 @@
+{
+  "entryPoints": ["vendor/discordbot.js/src/index.ts"],
+  "tsconfig": "vendor/discordbot.js/tsconfig.json",
+  "out": "docs",
+  "name": "discordbot.js",
+  "readme": "README.md",
+  "includeVersion": true,
+  "navigationLinks": {
+    "GitHub": "https://github.com/shir0sys/discordbot.js",
+    "Guides": "https://shir0sys.github.io/DiscordBotjs-docs/guides"
+  },
+  "projectDocuments": [
+    "guides/getting-started.md",
+    "guides/slash-commands.md",
+    "guides/components.md",
+    "guides/interactions.md",
+    "guides/sharding.md",
+    "guides/oauth2.md"
+  ],
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "sort": ["source-order"],
+  "categorizeByGroup": true,
+  "searchInComments": true
+}
