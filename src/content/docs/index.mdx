@@ -7,13 +7,16 @@ import { Card, CardGrid, LinkButton } from "@astrojs/starlight/components";
 import logo from "../../assets/logo.png";
 import { Image } from "astro:assets";
 
+{/* LinkButton takes a raw href — unlike sidebar/slug links, it does not get Astro's `base` prepended automatically. */}
+export const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+
 <Image src={logo} alt="discordbot.js" widths={[400, 800]} sizes="(min-width: 50rem) 400px, 80vw" style="max-width: 400px; height: auto; background: #fff; padding: 1rem 1.5rem; border-radius: 12px;" />
 
 A zero-dependency Discord API v10 wrapper for Node.js, built on native `fetch`, `WebSocket` and `EventEmitter` only.
 
 <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.5rem 0;">
-	<LinkButton href="/guides/getting-started/" icon="right-arrow">Get Started</LinkButton>
-	<LinkButton href="/api/readme/" icon="external" variant="minimal">API Reference</LinkButton>
+	<LinkButton href={`${base}guides/getting-started/`} icon="right-arrow">Get Started</LinkButton>
+	<LinkButton href={`${base}api/readme/`} icon="external" variant="minimal">API Reference</LinkButton>
 	<LinkButton href="https://github.com/shir0sys/discordbot.js" icon="github" variant="minimal">View on GitHub</LinkButton>
 </div>
 
