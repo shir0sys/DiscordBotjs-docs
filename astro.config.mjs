@@ -46,6 +46,7 @@ export default defineConfig({
             { label: "Threads", slug: "guides/threads" },
             { label: "Emojis & Stickers", slug: "guides/emojis-and-stickers" },
             { label: "Webhooks", slug: "guides/webhooks" },
+            { label: "Voice", slug: "guides/voice" },
             { label: "Error Handling", slug: "guides/error-handling" },
             { label: "Sharding", slug: "guides/sharding" },
             { label: "OAuth2", slug: "guides/oauth2" },

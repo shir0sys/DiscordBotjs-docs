@@ -1,6 +1,6 @@
 ---
 title: discordbot.js
-description: A zero-dependency Discord API v10 wrapper for Node.js.
+description: A Discord API v10 wrapper for Node.js, built on native fetch/WebSocket/crypto/dgram.
 ---
 
 import { Card, CardGrid, LinkButton } from "@astrojs/starlight/components";
@@ -12,7 +12,7 @@ export const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 
 <Image src={logo} alt="discordbot.js" widths={[400, 800]} sizes="(min-width: 50rem) 400px, 80vw" style="max-width: 400px; height: auto; background: #fff; padding: 1rem 1.5rem; border-radius: 12px;" />
 
-A zero-dependency Discord API v10 wrapper for Node.js, built on native `fetch`, `WebSocket` and `EventEmitter` only.
+A Discord API v10 wrapper for Node.js, built on native `fetch`, `WebSocket`, `EventEmitter`, `crypto` and `dgram` — the one real runtime dependency is [`opusscript`](https://www.npmjs.com/package/opusscript), used only by the voice module for Opus encoding.
 
 <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.5rem 0;">
 	<LinkButton href={`${base}guides/getting-started/`} icon="right-arrow">Get Started</LinkButton>
@@ -21,14 +21,17 @@ A zero-dependency Discord API v10 wrapper for Node.js, built on native `fetch`, 
 </div>
 
 <CardGrid stagger>
-	<Card title="Zero dependencies" icon="seti:lock">
-		No `discord.js`, no `ws`, no runtime dependencies at all — built entirely on Node 22's native `fetch` and `WebSocket`.
+	<Card title="Near-zero dependencies" icon="seti:lock">
+		No `discord.js`, no `ws` — built on Node 22's native `fetch`/`WebSocket`/`crypto`/`dgram`. The only runtime dependency is `opusscript`, for voice.
 	</Card>
 	<Card title="Full interaction support" icon="rocket">
 		Slash commands, context menus, buttons, select menus, modals, autocomplete and Components V2.
 	</Card>
 	<Card title="Sharding built in" icon="setting">
 		Run in-process across multiple shards, or spin up a multi-process `ShardingManager` with cross-shard `broadcastEval`.
+	</Card>
+	<Card title="Voice support" icon="rocket">
+		Join voice channels and play audio — gateway, UDP transport and Opus encoding built from scratch.
 	</Card>
 	<Card title="Typed end to end" icon="document">
 		Written in TypeScript from the ground up — every structure, builder and event is fully typed.
