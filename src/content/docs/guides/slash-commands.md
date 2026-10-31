@@ -1,4 +1,8 @@
-# Slash Commands
+---
+title: "Slash Commands"
+description: "Register and handle slash commands, subcommands and context menu commands."
+---
+
 
 ## Registering a command
 

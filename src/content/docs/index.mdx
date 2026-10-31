@@ -1,0 +1,39 @@
+---
+title: discordbot.js
+description: A zero-dependency Discord API v10 wrapper for Node.js.
+template: splash
+hero:
+  tagline: A zero-dependency Discord API v10 wrapper for Node.js, built on native fetch, WebSocket and EventEmitter only.
+  image:
+    file: ../../assets/logo.png
+  actions:
+    - text: Get Started
+      link: /guides/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: API Reference
+      link: /api/readme/
+      icon: external
+      variant: minimal
+    - text: View on GitHub
+      link: https://github.com/shir0sys/discordbot.js
+      icon: github
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+<CardGrid stagger>
+	<Card title="Zero dependencies" icon="seti:lock">
+		No `discord.js`, no `ws`, no runtime dependencies at all — built entirely on Node 22's native `fetch` and `WebSocket`.
+	</Card>
+	<Card title="Full interaction support" icon="rocket">
+		Slash commands, context menus, buttons, select menus, modals, autocomplete and Components V2.
+	</Card>
+	<Card title="Sharding built in" icon="setting">
+		Run in-process across multiple shards, or spin up a multi-process `ShardingManager` with cross-shard `broadcastEval`.
+	</Card>
+	<Card title="Typed end to end" icon="document">
+		Written in TypeScript from the ground up — every structure, builder and event is fully typed.
+	</Card>
+</CardGrid>

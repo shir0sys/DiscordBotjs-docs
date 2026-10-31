@@ -1,4 +1,8 @@
-# OAuth2
+---
+title: "OAuth2"
+description: "Let users log in with their own Discord account."
+---
+
 
 Use this when you need a user to log in with their own Discord account (not your bot's token) — e.g. a "Login with Discord" button on a website, or reading which servers a user is in.
 

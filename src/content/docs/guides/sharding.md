@@ -1,4 +1,8 @@
-# Sharding
+---
+title: "Sharding"
+description: "Run your bot across multiple gateway shards, in-process or multi-process."
+---
+
 
 Discord requires large bots (as a rule of thumb, past ~2,500 servers) to split their gateway connection into **shards**, each handling a subset of servers. `discordbot.js` supports two sharding modes.
 

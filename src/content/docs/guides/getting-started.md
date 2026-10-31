@@ -1,4 +1,8 @@
-# Getting Started
+---
+title: "Getting Started"
+description: "Install discordbot.js and write your first bot."
+---
+
 
 `discordbot.js` is a zero-dependency Discord API v10 wrapper for Node.js. It needs **Node.js 22 or later** — nothing else to install, since it relies entirely on Node's built-in `fetch` and `WebSocket`.
 
@@ -56,4 +60,3 @@ Some intents (`GuildMembers`, `GuildPresences`, `MessageContent`) are **privileg
 - [Handling interactions](./interactions.md)
 - [Sharding](./sharding.md)
 - [OAuth2](./oauth2.md)
-- Full [API reference](../index.html)

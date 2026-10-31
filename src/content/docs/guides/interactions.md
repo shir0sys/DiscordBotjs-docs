@@ -1,4 +1,8 @@
-# Handling Interactions
+---
+title: "Handling Interactions"
+description: "Respond to every interaction type and collect responses without a global listener."
+---
+
 
 Every interaction — slash command, button click, select menu pick, modal submit, autocomplete request — arrives through the same `interactionCreate` event. Use the type guards to narrow it:
 

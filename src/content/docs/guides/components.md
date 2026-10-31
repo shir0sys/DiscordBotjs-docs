@@ -1,4 +1,8 @@
-# Components
+---
+title: "Components"
+description: "Embeds, buttons, select menus, modals, Components V2, attachments and polls."
+---
+
 
 ## Embeds
 

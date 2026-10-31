@@ -1,0 +1,70 @@
+/* Discord-branded color scale for Starlight. Starlight derives all of its
+   backgrounds/text/borders from this gray + accent scale, so overriding it
+   here (rather than individual component selectors) keeps every page —
+   including ones added later by starlight-typedoc — consistently themed. */
+
+:root {
+  /* Dark theme (default) */
+  --sl-color-accent-low: #2b2d6e;
+  --sl-color-accent: #5865f2;
+  --sl-color-accent-high: #c7cbfa;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #eceef2;
+  --sl-color-gray-2: #c7c9cc;
+  --sl-color-gray-3: #96989d;
+  --sl-color-gray-4: #5c5e66;
+  --sl-color-gray-5: #3f4147;
+  --sl-color-gray-6: #2b2d31;
+  --sl-color-black: #1e1f22;
+}
+
+:root[data-theme="light"] {
+  --sl-color-accent-low: #e1e4ff;
+  --sl-color-accent: #4752c4;
+  --sl-color-accent-high: #1a1f66;
+  --sl-color-white: #17181c;
+  --sl-color-gray-1: #2b2d31;
+  --sl-color-gray-2: #3f4147;
+  --sl-color-gray-3: #5c5e66;
+  --sl-color-gray-4: #96989d;
+  --sl-color-gray-5: #c7c9cc;
+  --sl-color-gray-6: #eceef2;
+  --sl-color-gray-7: #f5f6f8;
+  --sl-color-black: #ffffff;
+}
+
+:root {
+  --sl-font: "gg sans", "Inter", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Rounded, Discord-ish surfaces instead of Starlight's sharper default corners */
+.sl-markdown-content pre,
+.sl-markdown-content :not(pre) > code,
+.card,
+.sidebar-content a,
+.right-sidebar-panel,
+input[type="text"] {
+  border-radius: 8px;
+}
+
+a.site-title {
+  font-weight: 700;
+}
+
+/* The wordmark logo has a solid white canvas (no transparency), so give it a
+   rounded white "badge" instead of letting it float as a stray white
+   rectangle against the dark header background. */
+.site-title img {
+  height: 1.75rem;
+  width: auto;
+  background: #ffffff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.hero img {
+  background: #ffffff;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}

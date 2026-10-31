@@ -3,13 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "description": "Documentation site for discordbot.js (API reference + guides)",
+  "type": "module",
   "scripts": {
-    "fetch-source": "node scripts/fetch-source.js",
-    "copy-media": "node scripts/copy-media.js",
-    "build": "npm run fetch-source && typedoc && npm run copy-media",
-    "serve": "npx http-server docs -p 8080 -c-1"
+    "fetch-source": "node scripts/fetch-source.cjs",
+    "dev": "npm run fetch-source && astro dev",
+    "build": "npm run fetch-source && astro build",
+    "preview": "astro preview"
   },
-  "devDependencies": {
-    "typedoc": "^0.28.0"
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.0",
+    "astro": "^7.4.0",
+    "starlight-typedoc": "^0.23.0",
+    "typedoc": "^0.28.0",
+    "typedoc-plugin-markdown": "^4.14.0"
   }
 }

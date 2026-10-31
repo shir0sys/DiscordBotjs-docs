@@ -1,3 +1,5 @@
 node_modules/
-docs/
 vendor/
+dist/
+.astro/
+src/content/docs/api/
