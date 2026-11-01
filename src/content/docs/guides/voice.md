@@ -3,10 +3,10 @@ title: "Voice"
 description: "Join a voice channel and play audio: gateway handshake, UDP transport and Opus encoding, all built in."
 ---
 
-discordbot.js can join a voice channel and play audio without delegating to `@discordjs/voice` or any native Opus binding. The voice gateway handshake, UDP transport (IP discovery, RTP framing), and `aead_aes256_gcm_rtpsize` encryption are implemented directly on top of Node's native `WebSocket`, `dgram` and `crypto`. The one real runtime dependency in the whole library — [`opusscript`](https://www.npmjs.com/package/opusscript), a pure WASM port of libopus — is used here for Opus encoding.
+discordbot.js can join a voice channel and play audio without delegating to `@discordjs/voice`. The voice gateway handshake, UDP transport (IP discovery, RTP framing), and `aead_aes256_gcm_rtpsize` encryption are implemented directly on top of Node's native `WebSocket`, `dgram` and `crypto`. Two runtime dependencies are used by the voice module only: [`opusscript`](https://www.npmjs.com/package/opusscript) (a pure WASM port of libopus) for Opus encoding, and [`@snazzah/davey`](https://www.npmjs.com/package/@snazzah/davey) (a native MLS implementation) for the DAVE end-to-end encryption Discord now requires on most voice channels.
 
 :::caution
-**Voice does not work on channels/guilds where Discord requires DAVE (end-to-end encryption)** — see [Scope and caveats](#scope-and-caveats) below. It's also send-only (no receiving/listening to other members), has no jitter buffering, and reconnection on a dropped voice gateway is best-effort only.
+The core voice transport is verified against a live Discord voice server. The **DAVE handshake is implemented from the published spec but not yet verified against a real multi-member encrypted call** — see [Scope and caveats](#scope-and-caveats) below. Voice is also send-only (no receiving/listening to other members), has no jitter buffering, and reconnection on a dropped voice gateway is best-effort only.
 :::
 
 ## Prerequisites
@@ -79,7 +79,7 @@ See [examples/voice-bot.js](https://github.com/shir0sys/discordbot.js/blob/main/
 
 ## Scope and caveats
 
-- **DAVE (end-to-end encryption) is not implemented, and Discord now requires it for voice on some guilds/channels.** DAVE is an MLS-based protocol (group key ratcheting, epochs, proposals/commits) — a substantial addition in its own right, not a small one. Joining a channel where it's required fails fast with a clear `"E2EE/DAVE protocol required"` error (close code 4017) instead of hanging or crashing, but there is currently no way to actually join such a channel. Verified live: the gateway handshake, UDP IP discovery and RTP/AES-256-GCM framing all work correctly against Discord's real voice servers when DAVE isn't required.
-- No voice receive — you cannot listen to other members, only send audio.
+- **DAVE (end-to-end encryption) handshake plumbing exists but is unverified against a real multi-member encrypted call.** Discord now requires DAVE on most voice channels. This client negotiates `max_dave_protocol_version` in IDENTIFY, routes the voice gateway's binary MLS opcodes (external sender, key package, proposals, commit/welcome, transitions) to [`@snazzah/davey`](https://www.npmjs.com/package/@snazzah/davey)'s `DAVESession`, and encrypts outgoing Opus frames once the group is established — built from Discord's published spec at [daveprotocol.com](https://daveprotocol.com/), not from reading another working client's wire traffic. The core voice transport (gateway handshake, UDP IP discovery, RTP/AES-256-GCM framing) *is* verified live; DAVE specifically still needs that same verification, ideally in a channel with another real member present so a group actually forms.
+- No voice receive — you cannot listen to other members, only send audio. Decrypting other members' DAVE-encrypted audio isn't implemented either.
 - No jitter buffering, and voice gateway reconnection only retries genuinely transient close codes — anything that would fail identically again (bad credentials, an unsupported protocol feature, a terminated call, ...) fails immediately instead of looping forever.
 - Encryption is `aead_aes256_gcm_rtpsize` only (chosen because AES-256-GCM is natively available via `node:crypto`); older XSalsa20-Poly1305 modes are not implemented.
