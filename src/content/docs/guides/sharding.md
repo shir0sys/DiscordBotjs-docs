@@ -57,6 +57,16 @@ const guildCounts = await manager.broadcastEval("this.guilds.cache.size");
 console.log(`Total guilds: ${guildCounts.reduce((a, b) => a + b, 0)}`);
 ```
 
+To find which shard owns a specific guild (exactly one does), `findGuild()` returns its shard id — not the `Guild` object itself, since a `Guild` holds a reference to its `Client`, which can't cross the IPC channel `broadcastEval` uses:
+
+```js
+const shardId = await manager.findGuild(guildId); // number | null
+if (shardId !== null) {
+  const names = await manager.broadcastEval(`this.guilds.cache.get("${guildId}")?.name ?? null`);
+  console.log(names[shardId]);
+}
+```
+
 ## Fetching members on a large guild
 
 For guilds large enough that Discord won't send every member on connect, request them explicitly over the gateway:

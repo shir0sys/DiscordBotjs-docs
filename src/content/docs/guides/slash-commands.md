@@ -56,7 +56,48 @@ client.on("interactionCreate", async (interaction) => {
 
 `SlashCommandBuilder` supports every Discord option type: `addStringOption`, `addIntegerOption`, `addNumberOption`, `addBooleanOption`, `addUserOption`, `addChannelOption`, `addRoleOption`, `addMentionableOption`, `addAttachmentOption`.
 
-Each accepts a config object: `{ required, choices, minValue, maxValue, channelTypes }`.
+Each accepts a config object: `{ required, choices, minValue, maxValue, channelTypes, autocomplete }`. `autocomplete` and `choices` are mutually exclusive — Discord rejects a command declaring both.
+
+## Localization, NSFW, install contexts
+
+```js
+const ping = new SlashCommandBuilder()
+  .setName("ping")
+  .setDescription("Replies with Pong!")
+  .setNameLocalizations({ fr: "ping", "es-ES": "ping" })
+  .setDescriptionLocalizations({ fr: "Répond Pong !" })
+  .setNSFW(false)
+  .setIntegrationTypes([0, 1]) // 0 = guild install, 1 = user install
+  .setContexts([0, 1, 2]); // guild, bot DM, private channel
+```
+
+## Managing registered commands
+
+```js
+const commands = await client.application.fetchAll();
+const command = await client.application.fetch(commandId);
+
+await command.edit({ description: "New description" });
+await command.delete();
+```
+
+Per-guild command permissions (which roles/users/channels can use a guild command) go through the command itself:
+
+```js
+const permissions = await command.fetchPermissions();
+await command.editPermissions(
+  [{ id: roleId, type: 1, permission: true }],
+  oauthBearerToken, // needs applications.commands.permissions.update from the guild owner — the bot token isn't accepted here
+);
+```
+
+`guild.commands` mirrors every one of these calls pre-scoped to one guild, caching the results:
+
+```js
+await guild.commands.create(say);
+const guildCommands = await guild.commands.fetchAll();
+await guild.commands.setAll([ping, say]); // bulk overwrite — named setAll, not set, since guild.commands is itself a Collection
+```
 
 ## Subcommands
 

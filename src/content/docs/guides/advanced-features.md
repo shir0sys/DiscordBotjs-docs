@@ -34,6 +34,17 @@ Mark a one-time-purchase entitlement as consumed once the user has used it:
 await entitlement.consume();
 ```
 
+`client.monetization.cache` holds every entitlement seen via `ENTITLEMENT_CREATE`/`UPDATE`/`DELETE` gateway events (also emitted as `entitlementCreate`/`entitlementUpdate`/`entitlementDelete`), kept in sync automatically — `fetchEntitlements()` itself is a plain filtered query and doesn't touch it.
+
+## Application info
+
+```js
+const app = await client.fetchApplication();
+console.log(app.name, app.description, app.iconURL());
+
+const packs = await client.fetchStickerPacks(); // Discord's built-in sticker packs
+```
+
 ## Soundboard
 
 Play one of a guild's soundboard sounds into a voice channel the bot is connected to:
@@ -57,7 +68,7 @@ const sounds = await guild.soundboardSounds.list();
 ```
 
 :::note
-Actually *joining* a voice channel to play audio isn't implemented in this library — see the [project's scope notes](https://github.com/shir0sys/discordbot.js) on why voice support was left out. `soundboard.play()` only works for triggering a soundboard sound in a channel the bot (or a user) is already connected to.
+`soundboard.play()` triggers a soundboard sound in a channel the bot (or a user) is already connected to — it's a REST call, not audio playback. For actually joining a voice channel and streaming audio, see the [Voice guide](/DiscordBotjs-docs/guides/voice/).
 :::
 
 ## Guild templates

@@ -101,6 +101,22 @@ for (const role of guild.roles.values()) {
 }
 ```
 
+## Auto moderation rules
+
+```js
+const rule = await guild.autoModerationRules.create({
+  name: "Block invite links",
+  event_type: 1,
+  trigger_type: 4, // keyword preset
+  trigger_metadata: { presets: [1] }, // profanity
+  actions: [{ type: 1, metadata: { custom_message: "No invite links here." } }],
+});
+
+const rules = await guild.autoModerationRules.fetchAll();
+await rule.edit({ enabled: false });
+await guild.autoModerationRules.remove(rule.id);
+```
+
 ## Fetching large member lists
 
 The REST `guild.members.list()` only returns up to 1000 members per call and requires the `GuildMembers` privileged intent to see more than the few cached from recent activity. For bulk member fetching on large servers, use the gateway-based fetch instead — see [Sharding → Fetching members on a large guild](/guides/sharding/).
