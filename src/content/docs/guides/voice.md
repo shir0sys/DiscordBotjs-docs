@@ -6,7 +6,7 @@ description: "Join a voice channel and play audio: gateway handshake, UDP transp
 discordbot.js can join a voice channel and play audio without delegating to `@discordjs/voice` or any native Opus binding. The voice gateway handshake, UDP transport (IP discovery, RTP framing), and `aead_aes256_gcm_rtpsize` encryption are implemented directly on top of Node's native `WebSocket`, `dgram` and `crypto`. The one real runtime dependency in the whole library — [`opusscript`](https://www.npmjs.com/package/opusscript), a pure WASM port of libopus — is used here for Opus encoding.
 
 :::caution
-Voice is send-only (no receiving/listening to other members), has no jitter buffering, and reconnection on a dropped voice gateway is best-effort only. See [Scope and caveats](#scope-and-caveats) below before relying on it in production.
+**Voice does not work on channels/guilds where Discord requires DAVE (end-to-end encryption)** — see [Scope and caveats](#scope-and-caveats) below. It's also send-only (no receiving/listening to other members), has no jitter buffering, and reconnection on a dropped voice gateway is best-effort only.
 :::
 
 ## Prerequisites
@@ -79,7 +79,7 @@ See [examples/voice-bot.js](https://github.com/shir0sys/discordbot.js/blob/main/
 
 ## Scope and caveats
 
-- **Protocol correctness has been unit-tested for internal consistency only** (the RTP/AES-256-GCM framing round-trips against Node's own `crypto`, Opus encode/decode round-trips through real libopus) — it has not been verified byte-for-byte against Discord's production voice servers beyond manual live testing by the maintainer. Report connection or audio issues on [GitHub](https://github.com/shir0sys/discordbot.js/issues).
+- **DAVE (end-to-end encryption) is not implemented, and Discord now requires it for voice on some guilds/channels.** DAVE is an MLS-based protocol (group key ratcheting, epochs, proposals/commits) — a substantial addition in its own right, not a small one. Joining a channel where it's required fails fast with a clear `"E2EE/DAVE protocol required"` error (close code 4017) instead of hanging or crashing, but there is currently no way to actually join such a channel. Verified live: the gateway handshake, UDP IP discovery and RTP/AES-256-GCM framing all work correctly against Discord's real voice servers when DAVE isn't required.
 - No voice receive — you cannot listen to other members, only send audio.
-- No jitter buffering, and voice gateway reconnection on an unexpected close is a basic retry, not a full resume-with-backfill.
+- No jitter buffering, and voice gateway reconnection only retries genuinely transient close codes — anything that would fail identically again (bad credentials, an unsupported protocol feature, a terminated call, ...) fails immediately instead of looping forever.
 - Encryption is `aead_aes256_gcm_rtpsize` only (chosen because AES-256-GCM is natively available via `node:crypto`); older XSalsa20-Poly1305 modes are not implemented.
